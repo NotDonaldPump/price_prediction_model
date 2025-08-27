@@ -18,7 +18,7 @@ app.add_middleware(
 )
 
 # -------- Chargement du modèle --------
-MODEL_PATH = os.getenv("MODEL_PATH", "model/student_housing_price_model.pkl")
+MODEL_PATH = os.getenv("MODEL_PATH", "student_housing_price_model.pkl")
 model = joblib.load(MODEL_PATH)
 
 # -------- Schéma d’entrée (doit matcher les colonnes d’entraînement) --------
