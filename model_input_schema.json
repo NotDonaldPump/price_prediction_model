@@ -1,4 +1,3 @@
-// model_input_schema.json
 {
   "expected_columns": [
     "surface_m2",
