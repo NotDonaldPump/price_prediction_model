@@ -29,23 +29,14 @@ except Exception as e:
 # ---- API ----
 app = FastAPI(title="Student Housing Price API", version="1.0.0")
 
-ALLOWED_ORIGINS = [
-    "http://localhost",
-    "http://127.0.0.1",
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:8080",
-    "http://127.0.0.1:8080",
-    "https://<ton-front-prod>",   # ← remplace par ton domaine front
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=ALLOWED_ORIGINS or ["*"],  # ["*"] OK si pas de cookies
-    allow_methods=["*"],     # important: inclut OPTIONS
-    allow_headers=["*"],     # ex. Content-Type
-    allow_credentials=False, # passe à True seulement si tu utilises des cookies
+    allow_origins=["*"],                 # DEV : ouvre large pour tous les ports localhost
+    allow_methods=["*"],                 # inclut OPTIONS (preflight)
+    allow_headers=["*"],                 # ex. Content-Type
+    allow_credentials=False,
 )
+
 
 class PredictionItem(BaseModel):
     surface_m2: float
@@ -68,6 +59,10 @@ class PredictResponse(BaseModel):
 @app.get("/health")
 def health():
     return {"status": "ok", "model": MODEL_PATH.name}
+
+@app.get("/")
+def root():
+    return {"status": "ok"}
 
 @app.get("/schema")
 def schema():
