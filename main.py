@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 from pathlib import Path
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 from typing import List, Optional, Any
 
@@ -27,6 +28,24 @@ except Exception as e:
 
 # ---- API ----
 app = FastAPI(title="Student Housing Price API", version="1.0.0")
+
+ALLOWED_ORIGINS = [
+    "http://localhost",
+    "http://127.0.0.1",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:8080",
+    "http://127.0.0.1:8080",
+    "https://<ton-front-prod>",   # ← remplace par ton domaine front
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS or ["*"],  # ["*"] OK si pas de cookies
+    allow_methods=["*"],     # important: inclut OPTIONS
+    allow_headers=["*"],     # ex. Content-Type
+    allow_credentials=False, # passe à True seulement si tu utilises des cookies
+)
 
 class PredictionItem(BaseModel):
     surface_m2: float
